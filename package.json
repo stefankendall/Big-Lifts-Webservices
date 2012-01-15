@@ -1,7 +1,6 @@
 {
-  "name": "node-example",
-  "version": "0.0.1",
+  "name": "wendler531-services",
+  "version": "1",
   "dependencies": {
-    "express": "2.2.0"
   }
 }
