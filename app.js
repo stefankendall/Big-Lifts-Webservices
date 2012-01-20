@@ -13,6 +13,7 @@ app.configure(function () {
     app.use(express.bodyParser());
     app.use(express.logger());
     app.use(express.methodOverride());
+    app.use(express.bodyParser());
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
 });
@@ -27,7 +28,7 @@ app.configure('production', function () {
 
 // Routes
 app.get('/', routes.index);
-app.get('/export/lift-log', routes.exportLiftLog);
+app.post('/export/lift-log', routes.exportLiftLog);
 
 var port = process.env.PORT || 3000;
 app.listen(port);
