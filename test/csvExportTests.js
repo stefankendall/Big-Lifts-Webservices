@@ -1,7 +1,7 @@
 var vows = require('vows'),
     assert = require('assert');
 
-var csvExport = require('../routes/lib/csvExport');
+var csvExport = require('../routes/lib/csv-export');
 
 vows.describe('Exporting JSON to a CSV file').addBatch({
     'Empty array':{

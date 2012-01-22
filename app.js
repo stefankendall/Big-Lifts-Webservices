@@ -1,12 +1,8 @@
-/**
- * Module dependencies.
- */
 var express = require('express')
     , routes = require('./routes');
 
 var app = module.exports = express.createServer();
 
-// Configuration
 app.configure(function () {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
@@ -28,6 +24,9 @@ app.configure('production', function () {
 
 // Routes
 app.get('/', routes.index);
+app.post('/lifts/:id', routes.saveLifts );
+app.get('/lifts/:id', routes.getLifts );
+
 app.post('/export/lift-log', routes.exportLiftLog);
 
 var port = process.env.PORT || 3000;
