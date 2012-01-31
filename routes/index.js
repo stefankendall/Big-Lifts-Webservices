@@ -1,7 +1,7 @@
 var util = require('util');
 var email = require('./lib/mail.js').mailer;
 var csvExport = require('./lib/csv-export.js');
-var liftStore = require('./lib/lift-store.js');
+var modelStore = require('lib/model-store.js');
 
 exports.index = function (req, res) {
     res.render('index', { title:'Express' })
@@ -10,14 +10,16 @@ exports.index = function (req, res) {
 exports.saveLifts = function (req, res) {
     var id = req.params.id;
     var liftsJson = req.body.lifts ? req.body.lifts : [];
-    liftStore.saveLifts(id, liftsJson);
-    res.send('{success:true}');
+    modelStore.saveModels('lifts', id, liftsJson, function (err, val) {
+        res.send('{success:true}')
+    });
 };
 
 exports.getLifts = function (req, res) {
     var id = req.params.id;
-    liftStore.getLifts(id);
-    res.send('{success:true}');
+    modelStore.getModels(id, function(err, val){
+        res.send('{success:true}');
+    });
 };
 
 exports.exportLiftLog = function (req, res) {
@@ -41,7 +43,7 @@ exports.exportLiftLog = function (req, res) {
                 }
             });
     }
-    else{
+    else {
         throw new Error('Export lift log called without any data');
     }
 

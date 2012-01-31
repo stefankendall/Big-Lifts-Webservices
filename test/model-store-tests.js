@@ -1,18 +1,19 @@
 var vows = require('vows'),
     assert = require('assert');
 
-var liftStore = require('../routes/lib/lift-store.js');
+var modelStore = require('../routes/lib/model-store.js');
 var db = require('../routes/lib/mongo').db;
 var _ = require('underscore');
 
 db.dropDatabase();
 
+var liftModelName = 'lifts';
 vows.describe('Saving lifts').addBatch({
     'Saving empty array is successful':{
         topic:function () {
             var topicThis = this;
-            liftStore.saveLifts(1, [], function () {
-                liftStore.getLifts(1, topicThis.callback);
+            modelStore.saveModels(liftModelName, 1, [], function () {
+                modelStore.getModels(liftModelName, 1, topicThis.callback);
             });
         },
         'saved array is retrieved when queried':function (err, lifts) {
@@ -22,13 +23,13 @@ vows.describe('Saving lifts').addBatch({
     'Single lift can be saved':{
         topic:function () {
             var topicThis = this;
-            liftStore.saveLifts(1, [
+            modelStore.saveModels(liftModelName, 1, [
                 {
                     id:3,
                     name:'squat'
                 }
             ], function () {
-                liftStore.getLifts(1, topicThis.callback);
+                modelStore.getModels(liftModelName, 1, topicThis.callback);
             });
         },
         'saved lift is returned by getLift':function (err, lifts) {
@@ -43,14 +44,14 @@ vows.describe('Saving lifts').addBatch({
     'Single lift can be updated':{
         topic:function () {
             var topicThis = this;
-            liftStore.saveLifts(1, [
+            modelStore.saveModels(liftModelName, 1, [
                 {id:4, name:'squat', reps:5}
             ],
                 function () {
-                    liftStore.saveLifts(1, [
+                    modelStore.saveModels(liftModelName, 1, [
                         {id:4, name:'squat', reps:6}
                     ], function () {
-                        liftStore.getLifts(1, topicThis.callback);
+                        modelStore.getModels(liftModelName, 1, topicThis.callback);
                     });
                 });
         },
