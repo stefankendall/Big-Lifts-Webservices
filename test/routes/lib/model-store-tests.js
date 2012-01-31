@@ -1,8 +1,8 @@
 var vows = require('vows'),
     assert = require('assert');
 
-var modelStore = require('../routes/lib/model-store.js');
-var db = require('../routes/lib/mongo').db;
+var modelStore = require('../../../routes/lib/model-store.js');
+var db = require('../../../routes/lib/mongo.js').db;
 var _ = require('underscore');
 
 db.dropDatabase();

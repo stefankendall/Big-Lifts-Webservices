@@ -27,7 +27,7 @@ app.get('/', routes.index);
 app.post('/lifts/:id', routes.saveLifts );
 app.get('/lifts/:id', routes.getLifts );
 
-app.post('/export/lift-log', routes.exportLiftLog);
+//app.post('/export/lift-log', routes.exportLiftLog);
 
 var port = process.env.PORT || 3000;
 app.listen(port);

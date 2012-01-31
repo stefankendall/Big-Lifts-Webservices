@@ -1,6 +1,6 @@
 var util = require('util');
-var email = require('./lib/mail.js').mailer;
-var csvExport = require('./lib/csv-export.js');
+var email = require('lib/email/mail.js').mailer;
+var csvExport = require('lib/csv/csv-export.js');
 var modelStore = require('lib/model-store.js');
 
 exports.index = function (req, res) {
@@ -11,14 +11,14 @@ exports.saveLifts = function (req, res) {
     var id = req.params.id;
     var liftsJson = req.body.lifts ? req.body.lifts : [];
     modelStore.saveModels('lifts', id, liftsJson, function (err, val) {
-        res.send('{success:true}')
+        res.send('{"success":true}')
     });
 };
 
 exports.getLifts = function (req, res) {
     var id = req.params.id;
     modelStore.getModels(id, function(err, val){
-        res.send('{success:true}');
+        res.send('{"success":true}');
     });
 };
 
