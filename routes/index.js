@@ -9,7 +9,7 @@ exports.index = function (req, res) {
 
 exports.saveLifts = function (req, res) {
     var id = req.params.id;
-    var liftsJson = req.body.lifts ? req.body.lifts : [];
+    var liftsJson = req.body.lifts ? JSON.parse(req.body.lifts) : [];
     util.log('Saving lifts for id: ' + id + " lifts: " + req.body.lifts);
     modelStore.saveModels('lifts', id, liftsJson, function (err, val) {
         var success = err === undefined;

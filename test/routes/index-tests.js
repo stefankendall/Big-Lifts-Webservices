@@ -43,7 +43,7 @@ vows.describe('Using lift endpoints').addBatch({
             var req = {
                 params:{id:'deviceid'},
                 body:{
-                    lifts:liftsToSave
+                    lifts:JSON.stringify(liftsToSave)
                 }
             };
             var res = {send:function (out) {

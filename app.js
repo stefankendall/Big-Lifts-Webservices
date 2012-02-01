@@ -19,13 +19,13 @@ app.configure('development', function () {
 });
 
 app.configure('production', function () {
-    app.use(express.errorHandler());
+    app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
 });
 
 // Routes
 app.get('/', routes.index);
-app.post('/lifts/:id', routes.saveLifts );
-app.get('/lifts/:id', routes.getLifts );
+app.post('/lifts/:id', routes.saveLifts);
+app.get('/lifts/:id', routes.getLifts);
 
 //app.post('/export/lift-log', routes.exportLiftLog);
 
