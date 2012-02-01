@@ -9,6 +9,15 @@ db.dropDatabase();
 
 var liftModelName = 'lifts';
 vows.describe('Saving lifts').addBatch({
+    'Getting nonexistent id':{
+        topic:function () {
+            var topicThis = this;
+            modelStore.getModels(liftModelName, 1, topicThis.callback);
+        },
+        'returns empty results':function (err, lifts) {
+            assert.deepEqual(lifts, []);
+        }
+    },
     'Saving empty array is successful':{
         topic:function () {
             var topicThis = this;

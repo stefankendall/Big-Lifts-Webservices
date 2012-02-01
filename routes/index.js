@@ -10,6 +10,7 @@ exports.index = function (req, res) {
 exports.saveLifts = function (req, res) {
     var id = req.params.id;
     var liftsJson = req.body.lifts ? req.body.lifts : [];
+    util.log('Saving lifts for id: ' + id);
     modelStore.saveModels('lifts', id, liftsJson, function (err, val) {
         res.send('{"success":true}')
     });
@@ -17,6 +18,7 @@ exports.saveLifts = function (req, res) {
 
 exports.getLifts = function (req, res) {
     var id = req.params.id;
+    util.log('Getting lifts for id: ' + id);
     modelStore.getModels('lifts', id, function (err, liftsArray) {
         var responseObject = {
             success:true,
