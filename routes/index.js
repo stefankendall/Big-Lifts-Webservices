@@ -12,7 +12,12 @@ exports.saveLifts = function (req, res) {
     var liftsJson = req.body.lifts ? req.body.lifts : [];
     util.log('Saving lifts for id: ' + id + " lifts: " + req.body.lifts);
     modelStore.saveModels('lifts', id, liftsJson, function (err, val) {
-        res.send('{"success":true}')
+        var success = err === undefined;
+        var responseObject = {
+            success:success,
+            error:err
+        };
+        res.send(JSON.stringify(responseObject))
     });
 };
 

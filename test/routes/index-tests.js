@@ -31,7 +31,9 @@ vows.describe('Using lift endpoints').addBatch({
             index.saveLifts(req, res);
         },
         'Response returns success':function (err, response) {
-            assert.equal(JSON.parse(response).success, true);
+            var responseObject = JSON.parse(response);
+            assert.isUndefined(responseObject.error);
+            assert.equal(responseObject.success, true);
         }
     },
     'Saved lifts can be returned':{
