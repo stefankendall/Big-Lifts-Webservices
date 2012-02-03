@@ -22,13 +22,13 @@ vows.describe('Using lift endpoints').addBatch({
             db.dropDatabase();
             var topicThis = this;
             var req = {
-                params:{id:'deviceid'},
+                params:{app:'wendler', deviceid:'deviceid', collection:'lifts'},
                 body:{}
             };
             var res = {send:function (out) {
                 topicThis.callback(null, out);
             }};
-            index.saveLifts(req, res);
+            index.saveModels(req, res);
         },
         'Response returns success':function (err, response) {
             var responseObject = JSON.parse(response);
@@ -41,25 +41,25 @@ vows.describe('Using lift endpoints').addBatch({
             db.dropDatabase();
             var topicThis = this;
             var req = {
-                params:{id:'deviceid'},
+                params:{app:'wendler', deviceid:'deviceid', collection:'lifts'},
                 body:{
-                    lifts:JSON.stringify(liftsToSave)
+                    data:JSON.stringify(liftsToSave)
                 }
             };
             var res = {send:function (out) {
-                var getRequest = {params:{id:'deviceid'}};
+                var getRequest = {params:{app:'wendler', deviceid:'deviceid', collection:'lifts'}};
                 var getResponse = {send:function (out) {
                     topicThis.callback(null, out);
                 }};
-                index.getLifts(getRequest, getResponse);
+                index.getModels(getRequest, getResponse);
             }};
-            index.saveLifts(req, res);
+            index.saveModels(req, res);
         },
         'All lifts are returned':function (err, response) {
             var objectResponse = JSON.parse(response);
             assert.equal(objectResponse.success, true);
             assert.equal(objectResponse.lifts.length, liftsToSave.length);
-            _.each(objectResponse.lifts, function(lift){
+            _.each(objectResponse.lifts, function (lift) {
                 assert.isUndefined(lift._id);
             });
         }

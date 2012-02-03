@@ -24,10 +24,8 @@ app.configure('production', function () {
 
 // Routes
 app.get('/', routes.index);
-app.post('/lifts/:id', routes.saveLifts);
-app.get('/lifts/:id', routes.getLifts);
-
-//app.post('/export/lift-log', routes.exportLiftLog);
+app.post('/:app/:deviceid/:collection', routes.saveModels);
+app.get('/:app/:deviceid/:collection', routes.getModels);
 
 var port = process.env.PORT || 3000;
 app.listen(port);
