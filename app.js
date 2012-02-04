@@ -3,6 +3,14 @@ var express = require('express')
 
 var app = module.exports = express.createServer();
 
+app.configure('development', function () {
+    app.use('/wendler', express.static(__dirname + '/wendler'));
+    app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
+});
+
+app.configure('production', function () {
+});
+
 app.configure(function () {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
@@ -12,18 +20,12 @@ app.configure(function () {
     app.use(express.bodyParser());
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
-});
-
-app.configure('development', function () {
     app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
 });
 
-app.configure('production', function () {
-    app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
-});
 
-// Routes
 app.get('/', routes.index);
+
 app.post('/:app/:deviceid/:collection', routes.saveModels);
 app.get('/:app/:deviceid/:collection', routes.getModels);
 
