@@ -17,9 +17,8 @@ var liftsToSave = [
 ];
 
 vows.describe('Using lift endpoints').addBatch({
-    'Saving lifts returns success response':{
+    'No body':{
         topic:function () {
-            db.dropDatabase();
             var topicThis = this;
             var req = {
                 params:{app:'wendler', deviceid:'deviceid', collection:'lifts'},
@@ -36,9 +35,8 @@ vows.describe('Using lift endpoints').addBatch({
             assert.equal(responseObject.success, true);
         }
     },
-    'Saved lifts can be returned':{
+    'A lift is saved':{
         topic:function () {
-            db.dropDatabase();
             var topicThis = this;
             var req = {
                 params:{app:'wendler', deviceid:'deviceid', collection:'lifts'},
@@ -47,21 +45,27 @@ vows.describe('Using lift endpoints').addBatch({
                 }
             };
             var res = {send:function (out) {
+                topicThis.callback(null, out);
+            }};
+            index.saveModels(req, res);
+        },
+        'With that lift':{
+            topic:function (err, response) {
+                var topicThis = this;
                 var getRequest = {params:{app:'wendler', deviceid:'deviceid', collection:'lifts'}};
                 var getResponse = {send:function (out) {
                     topicThis.callback(null, out);
                 }};
                 index.getModels(getRequest, getResponse);
-            }};
-            index.saveModels(req, res);
-        },
-        'All lifts are returned':function (err, response) {
-            var objectResponse = JSON.parse(response);
-            assert.equal(objectResponse.success, true);
-            assert.equal(objectResponse.lifts.length, liftsToSave.length);
-            _.each(objectResponse.lifts, function (lift) {
-                assert.isUndefined(lift._id);
-            });
+            },
+            'The lift is returned':function (err, response) {
+                var objectResponse = JSON.parse(response);
+                assert.equal(objectResponse.success, true);
+                assert.equal(objectResponse.lifts.length, liftsToSave.length);
+                _.each(objectResponse.lifts, function (lift) {
+                    assert.isUndefined(lift._id);
+                });
+            }
         }
     }
 }).export(module);

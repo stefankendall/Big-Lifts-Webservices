@@ -28,6 +28,7 @@ app.get('/', routes.index);
 
 app.post('/:app/:deviceid/:collection', routes.saveModels);
 app.get('/:app/:deviceid/:collection', routes.getModels);
+app.delete('/:app/:deviceid/:collection/:id', routes.deleteModel);
 
 var port = process.env.PORT || 3000;
 app.listen(port);

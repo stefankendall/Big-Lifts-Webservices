@@ -36,6 +36,10 @@ exports.getModels = function (req, res) {
     });
 };
 
+exports.deleteModel = function(req,res){
+
+};
+
 function getCollectionName(app, collection) {
     return app + "_" + collection;
 }
