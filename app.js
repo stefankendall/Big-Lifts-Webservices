@@ -26,6 +26,8 @@ app.configure(function () {
 
 app.get('/', routes.index);
 
+app.post('/email', routes.email);
+
 app.post('/:app/:deviceid/:collection', routes.saveModels);
 app.get('/:app/:deviceid/:collection', routes.getModels);
 app.delete('/:app/:deviceid/:collection/:id', routes.deleteModel);

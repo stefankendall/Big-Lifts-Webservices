@@ -2,9 +2,14 @@ var util = require('util');
 var _ = require('underscore');
 var modelStore = require('./lib/model-store.js');
 var responseSanitizer = require('./lib/response-sanitizer.js');
+var mailer = require('./lib/email/mail.js').mailer;
 
 exports.index = function (req, res) {
     res.render('index', { title:'Express' })
+};
+
+exports.email = function (req, res) {
+
 };
 
 exports.saveModels = function (req, res) {
@@ -36,7 +41,7 @@ exports.getModels = function (req, res) {
     });
 };
 
-exports.deleteModel = function(req,res){
+exports.deleteModel = function (req, res) {
 
 };
 
