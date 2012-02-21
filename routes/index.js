@@ -16,13 +16,34 @@ exports.email = function (req, res) {
     var data = req.body.data;
     var emailAddress = req.body.email;
 
-    if( data !== undefined ){
+    if (data !== undefined && emailAddress !== undefined) {
         var dataJson = JSON.parse(data);
         util.log(emailAddress + " - " + data);
         var csv = csvExport.jsonToCsv(dataJson);
+
+        var options = {
+            recipients:'stefankendall@gmail.com',
+            subject:'Subject Line',
+            from:'export@wendler.mobi',
+            content:{
+                'text/plain':"File attached."
+            },
+            attachments:{
+                'log.csv':{
+                    'content_type':'text/csv',
+                    'content':(new Buffer(csv)).toString("base64")
+                }
+            }
+        };
+
+        this.sendEmail(options, function (error, response) {
+            res.send('{"success":true}');
+        });
+    }
+    else {
+        res.send('{"success":true}');
     }
 
-    res.send('{"success":true}');
 };
 
 exports.saveModels = function (req, res) {
@@ -56,6 +77,10 @@ exports.getModels = function (req, res) {
 
 exports.deleteModel = function (req, res) {
 
+};
+
+this.sendEmail = function (options, callback) {
+    postageapp.sendMessage(options, callback);
 };
 
 function getCollectionName(app, collection) {

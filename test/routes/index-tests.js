@@ -1,8 +1,15 @@
 var vows = require('vows'),
     assert = require('assert');
 
+var mockEmailer = {
+    sendMail:function (options, callback) {
+        console.log(options);
+        callback(null, 'status');
+    }
+};
+
 var index = require('../../routes/index.js');
-var db = require('../../routes/lib/mongo.js').db;
+
 var _ = require('underscore');
 
 var liftsToSave = [
@@ -106,16 +113,21 @@ vows.describe('Exporting lift log via email').addBatch({
                                 cycle:1
                             }
                         ]),
-                    email:'stefankendall@gmail.com'},
+                    email:'stefankendall@gmail.com'}
             };
             var res = {send:function (out) {
-                topicThis.callback(null, out);
             }};
+
+            index.sendEmail = function (options, callback) {
+                topicThis.callback(null, options);
+            };
             index.email(req, res);
         },
-        'Response returns success':function (err, response) {
-            var responseObject = JSON.parse(response);
-            assert.equal(responseObject.success, true);
+        'Sent options is populated':function (err, response) {
+            var attachments = response.attachments;
+            var filename = Object.keys(attachments)[0];
+
+            assert.include(filename, '.csv');
         }
     }
 }).export(module);
