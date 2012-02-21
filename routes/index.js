@@ -1,15 +1,28 @@
+require = global.require || require;
+
 var util = require('util');
 var _ = require('underscore');
 var modelStore = require('./lib/model-store.js');
 var responseSanitizer = require('./lib/response-sanitizer.js');
-var mailer = require('./lib/email/mail.js').mailer;
+var postageapp = require('./lib/email/mail.js');
+var csvExport = require('./lib/csv/csv-export.js');
 
 exports.index = function (req, res) {
     res.render('index', { title:'Express' })
 };
 
 exports.email = function (req, res) {
+    var body = req.body.body;
+    var data = req.body.data;
+    var emailAddress = req.body.email;
 
+    if( data !== undefined ){
+        var dataJson = JSON.parse(data);
+        util.log(emailAddress + " - " + data);
+        var csv = csvExport.jsonToCsv(dataJson);
+    }
+
+    res.send('{"success":true}');
 };
 
 exports.saveModels = function (req, res) {

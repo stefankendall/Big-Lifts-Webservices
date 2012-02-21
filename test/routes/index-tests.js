@@ -69,3 +69,53 @@ vows.describe('Using lift endpoints').addBatch({
         }
     }
 }).export(module);
+
+
+vows.describe('Exporting lift log via email').addBatch({
+    'Empty data':{
+        topic:function () {
+            var topicThis = this;
+            var req = {
+                body:{
+                }
+            };
+            var res = {send:function (out) {
+                topicThis.callback(null, out);
+            }};
+            index.email(req, res);
+        },
+        'Response returns success':function (err, response) {
+            var responseObject = JSON.parse(response);
+            assert.equal(responseObject.success, true);
+        }
+    },
+    'Full data':{
+        topic:function () {
+            var topicThis = this;
+            var req = {
+                body:{
+                    body:'Attached.',
+                    data:JSON.stringify(
+                        [
+                            {
+                                liftName:'squat',
+                                max:300,
+                                reps:5,
+                                expectedReps:3,
+                                week:2,
+                                cycle:1
+                            }
+                        ]),
+                    email:'stefankendall@gmail.com'},
+            };
+            var res = {send:function (out) {
+                topicThis.callback(null, out);
+            }};
+            index.email(req, res);
+        },
+        'Response returns success':function (err, response) {
+            var responseObject = JSON.parse(response);
+            assert.equal(responseObject.success, true);
+        }
+    }
+}).export(module);
