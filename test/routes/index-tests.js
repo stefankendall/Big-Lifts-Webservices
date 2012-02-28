@@ -118,7 +118,7 @@ vows.describe('Exporting lift log via email').addBatch({
             var res = {send:function (out) {
             }};
 
-            index.sendEmail = function (options, callback) {
+            index._sendEmail = function (options, callback) {
                 topicThis.callback(null, options);
             };
             index.email(req, res);

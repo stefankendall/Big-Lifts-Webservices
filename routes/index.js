@@ -4,7 +4,7 @@ var util = require('util');
 var _ = require('underscore');
 var modelStore = require('./lib/model-store.js');
 var responseSanitizer = require('./lib/response-sanitizer.js');
-var postageapp = require('./lib/email/mail.js');
+var postageapp = require('./lib/email/mail.js').postageapp;
 var csvExport = require('./lib/csv/csv-export.js');
 
 exports.index = function (req, res) {
@@ -12,14 +12,12 @@ exports.index = function (req, res) {
 };
 
 exports.email = function (req, res) {
-    var body = req.body.body;
-    var data = req.body.data;
+    var data = JSON.parse(req.body.data);
     var emailAddress = req.body.email;
 
-    if (data !== undefined && emailAddress !== undefined) {
-        var dataJson = JSON.parse(data);
-        util.log(emailAddress + " - " + data);
-        var csv = csvExport.jsonToCsv(dataJson);
+    if (data !== undefined && emailAddress !== undefined && data !== '') {
+        util.log(emailAddress + " - " + JSON.stringify(data));
+        var csv = csvExport.jsonToCsv(data);
 
         var options = {
             recipients:'stefankendall@gmail.com',
@@ -36,7 +34,7 @@ exports.email = function (req, res) {
             }
         };
 
-        this.sendEmail(options, function (error, response) {
+        exports._sendEmail(options, function (error, response) {
             res.send('{"success":true}');
         });
     }
@@ -79,7 +77,7 @@ exports.deleteModel = function (req, res) {
 
 };
 
-this.sendEmail = function (options, callback) {
+exports._sendEmail = function (options, callback) {
     postageapp.sendMessage(options, callback);
 };
 
