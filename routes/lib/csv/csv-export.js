@@ -11,7 +11,11 @@ exports.jsonToCsv = function (liftList) {
 
         var rowValues = [];
         for (var property in lift) {
-            rowValues.push(lift[property]);
+            var value = lift[property];
+            if (typeof(value) === "string") {
+                value = '"' + value + '"';
+            }
+            rowValues.push(value);
         }
         csvString += rowValues.join(',') + '\n';
     }
