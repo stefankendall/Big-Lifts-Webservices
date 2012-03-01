@@ -23,60 +23,60 @@ var liftsToSave = [
     }
 ];
 
-vows.describe('Using lift endpoints').addBatch({
-    'No body':{
-        topic:function () {
-            var topicThis = this;
-            var req = {
-                params:{app:'wendler', deviceid:'deviceid', collection:'lifts'},
-                body:{}
-            };
-            var res = {send:function (out) {
-                topicThis.callback(null, out);
-            }};
-            index.saveModels(req, res);
-        },
-        'Response returns success':function (err, response) {
-            var responseObject = JSON.parse(response);
-            assert.isUndefined(responseObject.error);
-            assert.equal(responseObject.success, true);
-        }
-    },
-    'A lift is saved':{
-        topic:function () {
-            var topicThis = this;
-            var req = {
-                params:{app:'wendler', deviceid:'deviceid', collection:'lifts'},
-                body:{
-                    data:JSON.stringify(liftsToSave)
-                }
-            };
-            var res = {send:function (out) {
-                topicThis.callback(null, out);
-            }};
-            index.saveModels(req, res);
-        },
-        'With that lift':{
-            topic:function (err, response) {
-                var topicThis = this;
-                var getRequest = {params:{app:'wendler', deviceid:'deviceid', collection:'lifts'}};
-                var getResponse = {send:function (out) {
-                    topicThis.callback(null, out);
-                }};
-                index.getModels(getRequest, getResponse);
-            },
-            'The lift is returned':function (err, response) {
-                var objectResponse = JSON.parse(response);
-                assert.equal(objectResponse.success, true);
-                assert.equal(objectResponse.lifts.length, liftsToSave.length);
-                _.each(objectResponse.lifts, function (lift) {
-                    assert.isUndefined(lift._id);
-                });
-            }
-        }
-    }
-}).export(module);
-
+//vows.describe('Using lift endpoints').addBatch({
+//    'No body':{
+//        topic:function () {
+//            var topicThis = this;
+//            var req = {
+//                params:{app:'wendler', deviceid:'deviceid', collection:'lifts'},
+//                body:{}
+//            };
+//            var res = {send:function (out) {
+//                topicThis.callback(null, out);
+//            }};
+//            index.saveModels(req, res);
+//        },
+//        'Response returns success':function (err, response) {
+//            var responseObject = JSON.parse(response);
+//            assert.isUndefined(responseObject.error);
+//            assert.equal(responseObject.success, true);
+//        }
+//    },
+//    'A lift is saved':{
+//        topic:function () {
+//            var topicThis = this;
+//            var req = {
+//                params:{app:'wendler', deviceid:'deviceid', collection:'lifts'},
+//                body:{
+//                    data:JSON.stringify(liftsToSave)
+//                }
+//            };
+//            var res = {send:function (out) {
+//                topicThis.callback(null, out);
+//            }};
+//            index.saveModels(req, res);
+//        },
+//        'With that lift':{
+//            topic:function (err, response) {
+//                var topicThis = this;
+//                var getRequest = {params:{app:'wendler', deviceid:'deviceid', collection:'lifts'}};
+//                var getResponse = {send:function (out) {
+//                    topicThis.callback(null, out);
+//                }};
+//                index.getModels(getRequest, getResponse);
+//            },
+//            'The lift is returned':function (err, response) {
+//                var objectResponse = JSON.parse(response);
+//                assert.equal(objectResponse.success, true);
+//                assert.equal(objectResponse.lifts.length, liftsToSave.length);
+//                _.each(objectResponse.lifts, function (lift) {
+//                    assert.isUndefined(lift._id);
+//                });
+//            }
+//        }
+//    }
+//}).export(module);
+//
 
 vows.describe('Exporting lift log via email').addBatch({
     'Empty data':{
@@ -84,6 +84,7 @@ vows.describe('Exporting lift log via email').addBatch({
             var topicThis = this;
             var req = {
                 body:{
+
                 }
             };
             var res = {send:function (out) {
@@ -101,7 +102,6 @@ vows.describe('Exporting lift log via email').addBatch({
             var topicThis = this;
             var req = {
                 body:{
-                    body:'Attached.',
                     data:JSON.stringify(
                         [
                             {
@@ -113,7 +113,7 @@ vows.describe('Exporting lift log via email').addBatch({
                                 cycle:1
                             }
                         ]),
-                    email:'stefankendall@gmail.com'}
+                    email:'test@test.com'}
             };
             var res = {send:function (out) {
             }};
@@ -124,10 +124,12 @@ vows.describe('Exporting lift log via email').addBatch({
             index.email(req, res);
         },
         'Sent options is populated':function (err, response) {
+            var email = response.recipients;
             var attachments = response.attachments;
             var filename = Object.keys(attachments)[0];
 
             assert.include(filename, '.csv');
+            assert.equal(email, "test@test.com")
         }
     }
 }).export(module);

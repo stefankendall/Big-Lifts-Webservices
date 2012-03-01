@@ -12,19 +12,21 @@ exports.index = function (req, res) {
 };
 
 exports.email = function (req, res) {
-    var data = JSON.parse(req.body.data);
+    var dataString = req.body.data;
     var emailAddress = req.body.email;
 
-    if (data !== undefined && emailAddress !== undefined && data !== '') {
+    if (dataString !== undefined && emailAddress !== undefined && dataString !== '') {
+        var data = JSON.parse(req.body.data);
+
         util.log(emailAddress + " - " + JSON.stringify(data));
         var csv = csvExport.jsonToCsv(data);
 
         var options = {
-            recipients:'stefankendall@gmail.com',
-            subject:'Subject Line',
-            from:'export@wendler.mobi',
+            recipients:emailAddress,
+            subject:'Wendler 5/3/1 Log Export',
+            from:'wendler531@stefankendall.com',
             content:{
-                'text/plain':"File attached."
+                'text/plain':"Log file attached."
             },
             attachments:{
                 'log.csv':{
