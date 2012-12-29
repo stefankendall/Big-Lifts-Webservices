@@ -23,15 +23,8 @@ app.configure(function () {
     app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
 });
 
-
 app.get('/', routes.index);
-
 app.post('/email', routes.email);
-
-app.post('/:app/:deviceid/:collection', routes.saveModels);
-app.get('/:app/:deviceid/:collection', routes.getModels);
-app.delete('/:app/:deviceid/:collection/:id', routes.deleteModel);
-
 var port = process.env.PORT || 3000;
 app.listen(port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
