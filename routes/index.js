@@ -35,6 +35,7 @@ exports.email = function (req, res) {
         };
 
         exports._sendEmail(options, function (error, response) {
+            console.log(response);
             res.send('{"success":true}');
         });
     }
